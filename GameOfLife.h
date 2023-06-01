@@ -9,6 +9,13 @@
 #include <thread>
 #include <iostream>
 
+typedef enum running_state_t
+{
+	Setup,
+	Simulation,
+	Pause
+} RunningState;
+
 constexpr uint8_t kHeight = 20;
 constexpr uint8_t kWidth = 20;
 
