@@ -7,8 +7,8 @@ Board::Board(uint8_t height, uint8_t width)
 	mCursorCol = 1;
 	mCursorRow = 1;
 	mShowCursor = true;
-	mBoard = new char*[mWidth];
-	for (size_t i = 0; i < mWidth; i++) mBoard[i] = new char[mHeight];
+	mBoard = new bool*[mWidth];
+	for (size_t i = 0; i < mWidth; i++) mBoard[i] = new bool[mHeight];
 
 	for (uint8_t i = 0; i < mHeight; i++)
 	{
@@ -16,11 +16,11 @@ Board::Board(uint8_t height, uint8_t width)
 		{
 			if (i == 0 or j == 0 or i == (mHeight - 1) or j == (mHeight - 1))
 			{
-				mBoard[i][j] = '0';
+				mBoard[i][j] = false;
 			}
 			else
 			{
-				setPiece('.', i, j);
+				setPiece(false, i, j);
 			}
 		}
 	}
@@ -81,7 +81,7 @@ void Board::moveCursor(Direction direction)
 
 
 
-void Board::setPiece(char piece, uint8_t row, uint8_t col)
+void Board::setPiece(bool piece, uint8_t row, uint8_t col)
 {
 	if (row < 1 or row > (mHeight - 1) or col < 1 or col > (mWidth - 1))
 		throw std::invalid_argument("invalid row/column, must be within the board");
@@ -90,20 +90,20 @@ void Board::setPiece(char piece, uint8_t row, uint8_t col)
 }
 
 
-char Board::getPiece(uint8_t row, uint8_t col)
+bool Board::getPiece(uint8_t row, uint8_t col)
 {
 	return mBoard[row][col];
 }
 
 void Board::swapTile(void)
 {
-	if (mBoard[mCursorRow][mCursorCol] == '.')
+	if (!mBoard[mCursorRow][mCursorCol])
 	{
-		setPiece('o', mCursorRow, mCursorCol);
+		setPiece(true, mCursorRow, mCursorCol);
 	}
 	else
 	{
-		setPiece('.', mCursorRow, mCursorCol);
+		setPiece(false, mCursorRow, mCursorCol);
 	}
 }
 
@@ -122,7 +122,8 @@ void Board::drawBoard()
 			}
 			else
 			{
-				std::cout << ' ' << mBoard[i][j] << ' ';
+				char displaySymbol = (mBoard[i][j]) ? 'o' : '.';
+				std::cout << ' ' << displaySymbol << ' ';
 			}			
 		}
 

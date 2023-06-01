@@ -11,6 +11,5 @@ uint8_t main()
 	{
 		game.Run();
 		game.Render();		
-	}
-	
+	}	
 }

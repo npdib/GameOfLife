@@ -18,14 +18,14 @@ private:
 	bool mShowCursor;
 	uint8_t mHeight;
 	uint8_t mWidth;
-	char** mBoard;
+	bool** mBoard;
 
 public:
 	Board(uint8_t height, uint8_t width);
 	~Board();
 	void moveCursor(Direction direction);
-	void setPiece(char piece, uint8_t row, uint8_t col);
-	char getPiece(uint8_t row, uint8_t col);
+	void setPiece(bool piece, uint8_t row, uint8_t col);
+	bool getPiece(uint8_t row, uint8_t col);
 	void swapTile(void);
 	void drawBoard(void);
 };
