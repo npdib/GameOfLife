@@ -31,9 +31,13 @@ void Game::setup()
 	{
 		mBoard->moveCursor(Down);
 	}
-	if (keyPressed(enter))
+	if (keyPressed(space))
 	{
 		mBoard->swapTile();
+	}
+	if (keyPressed(enter))
+	{
+		mState = Simulation;
 	}
 }
 
@@ -56,11 +60,18 @@ void Game::Render()
 	{
 		mUpdate = 4;
 		mBoard->drawBoard();
+
+		if (mState == Setup)
+		{
+			std::cout << std::endl << "         Press arrow keys to move cursor and space to toggle a cell" << std::endl \
+				<< "         between alive and dead. Press enter to start the simulation.";
+		}
 	}
 	else
 	{
 		mUpdate--;
 	}
+
+
 	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 }
-

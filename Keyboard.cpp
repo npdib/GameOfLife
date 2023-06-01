@@ -1,6 +1,6 @@
 #include "Keyboard.h"
 
-Key left, right, up, down, enter;
+Key left, right, up, down, space, enter;
 
 bool keyPressed(Key& key)
 {
@@ -67,6 +67,20 @@ void GetKeyPresses(void)
 	{
 		up.held = false;
 	}
+
+	if ((GetKeyState(VK_SPACE) & 0x8000))
+	{
+		if (!space.held)
+		{
+			space.pressed = true;
+			space.held = true;
+		}
+	}
+	else
+	{
+		space.held = false;
+	}
+
 	if ((GetKeyState(VK_RETURN) & 0x8000))
 	{
 		if (!enter.held)
