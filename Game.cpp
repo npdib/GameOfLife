@@ -16,6 +16,74 @@ Game::~Game()
 	delete mBoard;
 }
 
+uint8_t Game::GetAliveNeighbours(uint8_t row, uint8_t col)
+{
+	uint8_t neighbours = 0;
+
+	for (uint8_t i = row - 1; i <= row + 1; i++)
+	{
+		for (uint8_t j = col - 1; j <= col + 1; j++)
+		{
+			if (!(i == row and j == col))
+			{
+				if (mBoard->getPiece(i, j))
+				{
+					neighbours++;
+				}
+			}
+		}
+	}
+	return neighbours;
+}
+
+bool Game::cellAlive(uint8_t neighbours, bool alive)
+{
+	if (alive)
+	{
+		if (neighbours == 2 or neighbours == 3)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		if (neighbours == 3)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
+
+void Game::runSimulationStep()
+{
+	Board tempBoard(kHeight, kWidth);
+
+	for (uint8_t i=1; i < kHeight - 1; i++)
+	{
+		for (uint8_t j=1; j < kWidth - 1; j++)
+		{
+			tempBoard.setPiece(cellAlive(GetAliveNeighbours(i, j), mBoard->getPiece(i, j)), i, j);
+		}
+	}
+
+	for (uint8_t i = 1; i < kHeight - 1; i++)
+	{
+		for (uint8_t j = 1; j < kWidth - 1; j++)
+		{
+			mBoard->setPiece(tempBoard.getPiece(i, j), i, j);
+		}
+	}
+}
+
+
 void Game::setup()
 {
 	mBoard->showCursor(true);
@@ -52,6 +120,11 @@ void Game::setup()
 void Game::simulation()
 {
 	mBoard->showCursor(false);
+
+	if (mSimulationSteps != 0 and mUpdate == 0)
+	{
+		runSimulationStep();
+	}
 
 	GetKeyPresses();
 	if (keyPressed(escape))
@@ -90,14 +163,6 @@ void Game::Run()
 	case Pause:
 		pause();
 		break;
-	}
-
-	if (mState.changeState)
-	{
-		mState.CurrentState = mState.NewState;
-		mState.changeState = false;
-		mState.NewState = None;
-		mUpdate = 0;
 	}
 }
 
@@ -160,6 +225,16 @@ void Game::Render()
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(20));
 		break;
+	}	
+}
+
+void Game::ChangeState()
+{
+	if (mState.changeState)
+	{
+		mState.CurrentState = mState.NewState;
+		mState.changeState = false;
+		mState.NewState = None;
+		mUpdate = 0;
 	}
-	
 }

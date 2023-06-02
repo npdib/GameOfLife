@@ -10,6 +10,7 @@ uint8_t main()
 	while (true)
 	{
 		game.Run();
-		game.Render();		
+		game.Render();
+		game.ChangeState();
 	}	
 }

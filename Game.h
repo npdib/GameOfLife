@@ -33,6 +33,11 @@ private:
 	int mSimulationSteps;
 	bool mDrawBoardOnPause;
 
+	uint8_t GetAliveNeighbours(uint8_t row, uint8_t col);
+	bool cellAlive(uint8_t neighbours, bool alive);
+
+	void runSimulationStep(void);
+
 	void setup(void);
 	void simulation(void);
 	void pause(void);
@@ -42,4 +47,5 @@ public:
 	~Game(void);
 	void Run(void);
 	void Render(void);
+	void ChangeState(void);
 };
