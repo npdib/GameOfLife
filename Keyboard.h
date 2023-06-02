@@ -9,7 +9,7 @@ typedef struct key_t
 	bool held = false;
 } Key;
 
-extern Key left, right, up, down, space, enter;
+extern Key left, right, up, down, space, enter, escape;
 
 bool keyPressed(Key& key);
 void GetKeyPresses(void);

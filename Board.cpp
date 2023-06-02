@@ -79,7 +79,10 @@ void Board::moveCursor(Direction direction)
 	}
 }
 
-
+void Board::showCursor(bool show)
+{
+	mCursorOn = show;
+}
 
 void Board::setPiece(bool piece, uint8_t row, uint8_t col)
 {
@@ -110,13 +113,14 @@ void Board::swapTile(void)
 void Board::drawBoard()
 {
 	system("cls");
+
 	std::cout << std::endl << std::endl << std::endl;
 	for (uint8_t i = 1; i < mHeight - 1; i++)
 	{
 		std::cout << "        ";
 		for (uint8_t j = 1; j < mWidth - 1; j++)
 		{
-			if (i == mCursorRow and j == mCursorCol and mShowCursor)
+			if (i == mCursorRow and j == mCursorCol and mShowCursor and mCursorOn)
 			{
 				std::cout << ' ' << (unsigned char) 219 << ' ';
 			}
