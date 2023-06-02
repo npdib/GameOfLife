@@ -171,6 +171,13 @@ void Game::pause()
 		mState.NewState = Simulation;
 		mState.changeState = true;
 	}
+
+	if (keyPressed(enter))
+	{
+		mState.NewState = Setup;
+		mState.changeState = true;
+		mBoard->resetBoardAndCursor();
+	}
 }
 
 void Game::finished()
@@ -261,6 +268,8 @@ void Game::Render()
 			std::cout << "                        Simulation Paused ..." << std::endl;
 
 			std::cout << "                    Press escape to continue" << std::endl;
+
+			std::cout << "                       or enter to restart" << std::endl;
 
 			mDrawBoardOnce = false;
 		}
