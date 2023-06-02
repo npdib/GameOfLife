@@ -24,6 +24,7 @@ private:
 public:
 	Board(uint8_t height, uint8_t width);
 	~Board();
+	void resetBoardAndCursor(void);
 	void moveCursor(Direction direction);
 	void showCursor(bool show);
 	void setPiece(bool piece, uint8_t row, uint8_t col);

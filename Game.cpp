@@ -74,6 +74,32 @@ void Game::runSimulationStep()
 		}
 	}
 
+	bool BoardSame = true;
+
+	for (uint8_t i = 1; i < kHeight - 1; i++)
+	{
+		for (uint8_t j = 1; j < kWidth - 1; j++)
+		{
+			if (tempBoard.getPiece(i,j) != mBoard->getPiece(i, j))
+			{
+				BoardSame = false;
+				break;
+			}
+		}
+
+		if (!BoardSame)
+		{
+			break;
+		}
+	}
+
+	if (BoardSame)
+	{
+		mState.NewState = Finished;
+		mState.changeState = true;
+		mDrawBoardOnce = true;
+	}
+
 	for (uint8_t i = 1; i < kHeight - 1; i++)
 	{
 		for (uint8_t j = 1; j < kWidth - 1; j++)
@@ -131,7 +157,7 @@ void Game::simulation()
 	{
 		mState.NewState = Pause;
 		mState.changeState = true;
-		mDrawBoardOnPause = true;
+		mDrawBoardOnce = true;
 	}
 }
 
@@ -146,6 +172,20 @@ void Game::pause()
 		mState.changeState = true;
 	}
 }
+
+void Game::finished()
+{
+	mBoard->showCursor(false);
+
+	GetKeyPresses();
+	if (keyPressed(enter))
+	{
+		mState.NewState = Setup;
+		mState.changeState = true;
+		mBoard->resetBoardAndCursor();
+	}
+}
+
 
 
 
@@ -162,6 +202,9 @@ void Game::Run()
 		break;
 	case Pause:
 		pause();
+		break;
+	case Finished:
+		finished();
 		break;
 	}
 }
@@ -194,7 +237,7 @@ void Game::Render()
 
 		if (mUpdate == 0)
 		{
-			mUpdate = 49;
+			mUpdate = 19;
 			mBoard->drawBoard();
 			std::cout << "                   Current simulation steps:  " << mSimulationSteps << std::endl;
 			mSimulationSteps++;
@@ -209,7 +252,7 @@ void Game::Render()
 
 	case Pause:
 
-		if (mDrawBoardOnPause)
+		if (mDrawBoardOnce)
 		{
 			mBoard->drawBoard();
 
@@ -219,13 +262,27 @@ void Game::Render()
 
 			std::cout << "                    Press escape to continue" << std::endl;
 
-			mDrawBoardOnPause = false;
+			mDrawBoardOnce = false;
 		}
-		
+
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(20));
 		break;
-	}	
+
+	case Finished:
+		if (mDrawBoardOnce)
+		{
+			mBoard->drawBoard();
+
+			std::cout << "                  Simulation Finished in " << mSimulationSteps - 2 << " steps." << std::endl;
+			std::cout << "                  Press enter to restart ... " << std::endl;
+
+			mDrawBoardOnce = false;
+		}
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(20));
+		break;
+	}
 }
 
 void Game::ChangeState()

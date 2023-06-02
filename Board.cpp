@@ -10,20 +10,7 @@ Board::Board(uint8_t height, uint8_t width)
 	mBoard = new bool*[mWidth];
 	for (size_t i = 0; i < mWidth; i++) mBoard[i] = new bool[mHeight];
 
-	for (uint8_t i = 0; i < mHeight; i++)
-	{
-		for (uint8_t j = 0; j < mWidth; j++)
-		{
-			if (i == 0 or j == 0 or i == (mHeight - 1) or j == (mHeight - 1))
-			{
-				mBoard[i][j] = false;
-			}
-			else
-			{
-				setPiece(false, i, j);
-			}
-		}
-	}
+	resetBoardAndCursor();
 }
 
 Board::~Board()
@@ -31,6 +18,21 @@ Board::~Board()
 	for (size_t i = 0; i < mWidth; i++) delete[] mBoard[i];
 	delete[] mBoard;
 }
+
+void Board::resetBoardAndCursor()
+{
+	for (uint8_t i = 0; i < mHeight; i++)
+	{
+		for (uint8_t j = 0; j < mWidth; j++)
+		{
+			mBoard[i][j] = false;
+		}
+	}
+
+	mCursorCol = 1;
+	mCursorRow = 1;
+}
+
 
 void Board::moveCursor(Direction direction)
 {

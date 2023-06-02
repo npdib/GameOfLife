@@ -14,7 +14,8 @@ typedef enum running_state_t
 	None,
 	Setup,
 	Simulation,
-	Pause
+	Pause,
+	Finished
 } RunningState;
 
 typedef struct full_state_t
@@ -31,7 +32,7 @@ private:
 	FullState mState;
 	Board* mBoard;
 	int mSimulationSteps;
-	bool mDrawBoardOnPause;
+	bool mDrawBoardOnce;
 
 	uint8_t GetAliveNeighbours(uint8_t row, uint8_t col);
 	bool cellAlive(uint8_t neighbours, bool alive);
@@ -41,6 +42,7 @@ private:
 	void setup(void);
 	void simulation(void);
 	void pause(void);
+	void finished(void);
 
 public:
 	Game(void);

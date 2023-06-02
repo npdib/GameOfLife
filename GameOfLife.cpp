@@ -5,10 +5,11 @@
 
 uint8_t main()
 {
+	system("TITLE Game of Life");
 	Game game;
 
 	while (true)
-	{
+	{		
 		game.Run();
 		game.Render();
 		game.ChangeState();
